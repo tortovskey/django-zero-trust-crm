@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Клиенты - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Клиенты</h1>
+    <p>Учет клиентов и согласий на обработку персональных данных.</p>
+  </div>
+  {% if user.profile.role == 'admin' or user.profile.role == 'manager' %}
+    <a class="btn btn-primary" href="{% url 'clients:create' %}">Новый клиент</a>
+  {% endif %}
+</div>
+<form class="filters" method="get">
+  <input class="form-control" name="q" value="{{ query }}" placeholder="Поиск по ФИО или названию">
+  <button class="btn btn-outline-primary" type="submit">Найти</button>
+</form>
+<div class="table-responsive panel">
+  <table class="table align-middle">
+    <thead><tr><th>Клиент</th><th>Email</th><th>Тип</th><th>Согласие</th><th></th></tr></thead>
+    <tbody>
+    {% for client in clients %}
+      <tr>
+        <td>{{ client.full_name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.get_client_type_display }}</td>
+        <td>
+          {% if client.personal_data_consent %}
+            <span class="badge text-bg-success">{{ client.get_consent_status_display }}</span>
+          {% else %}
+            <span class="badge text-bg-warning">{{ client.get_consent_status_display }}</span>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'clients:detail' client.pk %}">Просмотр</a>
+          {% if user.profile.role == 'admin' or user.profile.role == 'manager' %}
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'clients:update' client.pk %}">Изменить</a>
+            <a class="btn btn-sm btn-outline-danger" href="{% url 'clients:delete' client.pk %}">Удалить</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5" class="text-muted">Клиенты не найдены.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

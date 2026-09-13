@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}403 - KOSTY{% endblock %}
+{% block content %}
+<div class="empty-state">
+  <h1>403</h1>
+  <p>Недостаточно прав. В KOSTY доступ проверяется по принципу Zero Trust: каждый запрос требует авторизации, активной учетной записи и подходящей роли.</p>
+  <a class="btn btn-primary" href="{% url 'dashboard' %}">На dashboard</a>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="empty-state">
+  <h1>403</h1>
+  <p>Недостаточно прав.</p>
+  <a class="btn btn-primary" href="{% url 'accounts:login' %}">Войти</a>
+</div>
+{% endblock %}

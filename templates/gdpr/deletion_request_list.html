@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Запросы на удаление - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Запросы на удаление данных</h1>
+    <p>Фиксация GDPR-запросов пользователя или клиента.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'gdpr:deletion_request_create' %}">Новый запрос</a>
+</div>
+<div class="table-responsive panel">
+  <table class="table align-middle">
+    <thead><tr><th>Дата</th><th>Пользователь</th><th>Клиент</th><th>Причина</th><th>Статус</th><th></th></tr></thead>
+    <tbody>
+    {% for item in deletion_requests %}
+      <tr>
+        <td>{{ item.requested_at|date:'d.m.Y H:i' }}</td>
+        <td>{{ item.user|default:'-' }}</td>
+        <td>{{ item.client|default:'-' }}</td>
+        <td>{{ item.reason }}</td>
+        <td><span class="badge text-bg-secondary">{{ item.get_status_display }}</span></td>
+        <td class="text-end">
+          {% if user.profile.role == 'admin' %}
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'gdpr:deletion_request_update' item.pk %}">Рассмотреть</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" class="text-muted">Запросов нет.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

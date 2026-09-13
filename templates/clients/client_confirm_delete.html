@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Удалить клиента - KOSTY{% endblock %}
+{% block content %}
+<div class="panel narrow">
+  <h1 class="h4">Удалить клиента?</h1>
+  <p>Клиент: <strong>{{ client.full_name }}</strong></p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Удалить</button>
+    <a class="btn btn-outline-secondary" href="{% url 'clients:detail' client.pk %}">Отмена</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Вход - KOSTY{% endblock %}
+{% block auth_content %}
+<div class="text-center mb-4">
+  <div class="brand-mark mx-auto mb-2">K</div>
+  <h1 class="h3 mb-1">KOSTY</h1>
+  <p class="text-muted mb-0">Secure Information System based on Zero Trust and GDPR principles</p>
+</div>
+<form method="post">
+  {% include 'form_fields.html' %}
+  <button class="btn btn-primary w-100" type="submit">Войти</button>
+</form>
+<div class="mt-3 text-center">
+  <a href="{% url 'accounts:register' %}">Создать учетную запись</a>
+</div>
+{% endblock %}

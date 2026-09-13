@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Клиент - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>{{ client.full_name }}</h1>
+    <p>{{ client.get_client_type_display }}</p>
+  </div>
+  <div>
+    {% if user.profile.role == 'admin' or user.profile.role == 'manager' %}
+      <a class="btn btn-primary" href="{% url 'clients:update' client.pk %}">Изменить</a>
+    {% endif %}
+    <a class="btn btn-outline-secondary" href="{% url 'clients:list' %}">Назад</a>
+  </div>
+</div>
+<div class="panel">
+  <dl class="row mb-0">
+    <dt class="col-sm-3">Email</dt><dd class="col-sm-9">{{ client.email }}</dd>
+    <dt class="col-sm-3">Телефон</dt><dd class="col-sm-9">{{ client.phone|default:'-' }}</dd>
+    <dt class="col-sm-3">Адрес</dt><dd class="col-sm-9">{{ client.address|default:'-' }}</dd>
+    <dt class="col-sm-3">Дата регистрации</dt><dd class="col-sm-9">{{ client.registration_date|date:'d.m.Y' }}</dd>
+    <dt class="col-sm-3">Согласие</dt><dd class="col-sm-9">{{ client.get_consent_status_display }}{% if client.consent_date %}, {{ client.consent_date|date:'d.m.Y' }}{% endif %}</dd>
+    <dt class="col-sm-3">Цель обработки</dt><dd class="col-sm-9">{{ client.processing_purpose }}</dd>
+    <dt class="col-sm-3">Комментарий</dt><dd class="col-sm-9">{{ client.comment|default:'-' }}</dd>
+  </dl>
+</div>
+{% endblock %}

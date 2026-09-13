@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Пользователи - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Пользователи</h1>
+    <p>Назначение ролей и управление активностью учетных записей.</p>
+  </div>
+</div>
+<div class="table-responsive panel">
+  <table class="table align-middle">
+    <thead><tr><th>Логин</th><th>Email</th><th>Роль</th><th>MFA</th><th>Активен</th><th></th></tr></thead>
+    <tbody>
+    {% for item in users %}
+      <tr>
+        <td>{{ item.username }}</td>
+        <td>{{ item.email }}</td>
+        <td><span class="badge text-bg-secondary">{{ item.profile.get_role_display }}</span></td>
+        <td>{% if item.profile.mfa_enabled %}<span class="badge text-bg-info">вкл</span>{% else %}-{% endif %}</td>
+        <td>{% if item.is_active and item.profile.is_active_profile %}<span class="badge text-bg-success">да</span>{% else %}<span class="badge text-bg-danger">нет</span>{% endif %}</td>
+        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'accounts:user_role_update' item.pk %}">Роль</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

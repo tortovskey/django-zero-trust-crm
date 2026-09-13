@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Заявки - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Заявки</h1>
+    <p>Создание, обработка, фильтрация по статусу и приоритету.</p>
+  </div>
+  {% if user.profile.role == 'admin' or user.profile.role == 'manager' or user.profile.role == 'user' %}
+    <a class="btn btn-primary" href="{% url 'tickets:create' %}">Новая заявка</a>
+  {% endif %}
+</div>
+<form class="filters" method="get">
+  <input class="form-control" name="q" value="{{ query }}" placeholder="Клиент или тема">
+  <select class="form-select" name="status">
+    <option value="">Все статусы</option>
+    {% for value, label in statuses %}
+      <option value="{{ value }}" {% if value == status %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <select class="form-select" name="priority">
+    <option value="">Все приоритеты</option>
+    {% for value, label in priorities %}
+      <option value="{{ value }}" {% if value == priority %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-outline-primary" type="submit">Фильтр</button>
+</form>
+<div class="table-responsive panel">
+  <table class="table align-middle">
+    <thead><tr><th>Номер</th><th>Тема</th><th>Клиент</th><th>Статус</th><th>Приоритет</th><th>Ответственный</th><th></th></tr></thead>
+    <tbody>
+    {% for ticket in tickets %}
+      <tr>
+        <td>{{ ticket.number }}</td>
+        <td>{{ ticket.subject }}</td>
+        <td>{{ ticket.client|default:'-' }}</td>
+        <td><span class="badge text-bg-secondary">{{ ticket.get_status_display }}</span></td>
+        <td><span class="badge text-bg-info">{{ ticket.get_priority_display }}</span></td>
+        <td>{{ ticket.responsible_manager|default:'-' }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'tickets:detail' ticket.pk %}">Просмотр</a>
+          {% if user.profile.role == 'admin' or user.profile.role == 'manager' %}
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'tickets:update' ticket.pk %}">Изменить</a>
+            <a class="btn btn-sm btn-outline-danger" href="{% url 'tickets:delete' ticket.pk %}">Удалить</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="7" class="text-muted">Заявки не найдены.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

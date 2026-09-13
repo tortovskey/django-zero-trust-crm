@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Сводка защищенной информационной системы управления клиентскими заявками.</p>
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-md-6 col-xl-3">
+    <div class="metric"><span>Клиенты</span><strong>{{ clients_count }}</strong></div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="metric"><span>Заявки</span><strong>{{ tickets_count }}</strong></div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="metric"><span>Открытые заявки</span><strong>{{ open_tickets_count }}</strong></div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="metric"><span>События ИБ</span><strong>{{ security_events_count }}</strong></div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="metric"><span>GDPR-запросы</span><strong>{{ gdpr_requests_count }}</strong></div>
+  </div>
+</div>
+<div class="info-panel mt-4">
+  <h2 class="h5">Что демонстрирует система</h2>
+  <p class="mb-0">Авторизация, RBAC, учебный MFA, журналирование событий, доверенные устройства, CRUD клиентов и заявок, экспорт данных и запрос на удаление по GDPR.</p>
+</div>
+{% endblock %}

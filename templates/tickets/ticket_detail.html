@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Заявка - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>{{ ticket.number }}</h1>
+    <p>{{ ticket.subject }}</p>
+  </div>
+  <div>
+    {% if user.profile.role == 'admin' or user.profile.role == 'manager' %}
+      <a class="btn btn-primary" href="{% url 'tickets:update' ticket.pk %}">Изменить</a>
+    {% endif %}
+    <a class="btn btn-outline-secondary" href="{% url 'tickets:list' %}">Назад</a>
+  </div>
+</div>
+<div class="panel">
+  <dl class="row mb-0">
+    <dt class="col-sm-3">Клиент</dt><dd class="col-sm-9">{{ ticket.client|default:'-' }}</dd>
+    <dt class="col-sm-3">Описание</dt><dd class="col-sm-9">{{ ticket.description }}</dd>
+    <dt class="col-sm-3">Статус</dt><dd class="col-sm-9">{{ ticket.get_status_display }}</dd>
+    <dt class="col-sm-3">Приоритет</dt><dd class="col-sm-9">{{ ticket.get_priority_display }}</dd>
+    <dt class="col-sm-3">Ответственный</dt><dd class="col-sm-9">{{ ticket.responsible_manager|default:'-' }}</dd>
+    <dt class="col-sm-3">Автор</dt><dd class="col-sm-9">{{ ticket.requester|default:'-' }}</dd>
+    <dt class="col-sm-3">Создана</dt><dd class="col-sm-9">{{ ticket.created_at|date:'d.m.Y H:i' }}</dd>
+    <dt class="col-sm-3">Закрыта</dt><dd class="col-sm-9">{{ ticket.closed_at|date:'d.m.Y H:i'|default:'-' }}</dd>
+  </dl>
+</div>
+{% endblock %}

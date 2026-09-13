@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}404 - KOSTY{% endblock %}
+{% block content %}
+<div class="empty-state">
+  <h1>404</h1>
+  <p>Страница не найдена.</p>
+  <a class="btn btn-primary" href="{% url 'dashboard' %}">На dashboard</a>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="empty-state">
+  <h1>404</h1>
+  <p>Страница не найдена.</p>
+  <a class="btn btn-primary" href="{% url 'accounts:login' %}">Войти</a>
+</div>
+{% endblock %}

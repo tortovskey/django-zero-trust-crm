@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}MFA - KOSTY{% endblock %}
+{% block auth_content %}
+<h1 class="h4 mb-2">Демонстрационный MFA</h1>
+<p class="text-muted">Это учебная имитация MFA, не production-реализация. Код для защиты курсача: <strong>{{ demo_code }}</strong>.</p>
+<form method="post">
+  {% csrf_token %}
+  <label class="form-label" for="code">Код подтверждения</label>
+  <input class="form-control mb-3" id="code" name="code" inputmode="numeric" autocomplete="one-time-code" required>
+  <button class="btn btn-primary w-100" type="submit">Подтвердить</button>
+</form>
+{% endblock %}

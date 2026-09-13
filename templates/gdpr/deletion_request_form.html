@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>{{ title }}</h1>
+    <p>Запрос фиксируется в журнале безопасности как событие среднего риска.</p>
+  </div>
+</div>
+<form method="post" class="panel narrow">
+  {% include 'form_fields.html' %}
+  <button class="btn btn-primary" type="submit">Сохранить</button>
+  <a class="btn btn-outline-secondary" href="{% url 'gdpr:deletion_requests' %}">Назад</a>
+</form>
+{% endblock %}

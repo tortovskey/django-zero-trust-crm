@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Журнал безопасности - KOSTY{% endblock %}
+{% block content %}
+<div class="page-title">
+  <div>
+    <h1>Журнал безопасности</h1>
+    <p>События входа, MFA, отказов доступа, экспорта данных и изменений ролей.</p>
+  </div>
+</div>
+<form class="filters" method="get">
+  <select class="form-select" name="event_type">
+    <option value="">Все события</option>
+    {% for value, label in event_types %}
+      <option value="{{ value }}" {% if value == event_type %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <select class="form-select" name="risk">
+    <option value="">Все риски</option>
+    {% for value, label in risk_levels %}
+      <option value="{{ value }}" {% if value == risk %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-outline-primary" type="submit">Фильтр</button>
+</form>
+<div class="table-responsive panel">
+  <table class="table align-middle">
+    <thead><tr><th>Дата</th><th>Пользователь</th><th>Событие</th><th>IP</th><th>Риск</th><th>Описание</th></tr></thead>
+    <tbody>
+    {% for event in events %}
+      <tr>
+        <td>{{ event.created_at|date:'d.m.Y H:i' }}</td>
+        <td>{{ event.user|default:'anonymous' }}</td>
+        <td>{{ event.get_event_type_display }}</td>
+        <td>{{ event.ip_address|default:'-' }}</td>
+        <td>
+          {% if event.risk_level == 'high' %}
+            <span class="badge text-bg-danger">{{ event.get_risk_level_display }}</span>
+          {% elif event.risk_level == 'medium' %}
+            <span class="badge text-bg-warning">{{ event.get_risk_level_display }}</span>
+          {% else %}
+            <span class="badge text-bg-success">{{ event.get_risk_level_display }}</span>
+          {% endif %}
+        </td>
+        <td>{{ event.description }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" class="text-muted">Событий нет.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
