@@ -1,12 +1,15 @@
 # Django Zero Trust CRM (KOSTY)
 
-KOSTY — учебная защищенная информационная система управления клиентскими заявками с применением принципов Zero Trust Architecture и требований GDPR.
+KOSTY is an educational CRM prototype for managing customers and service requests.
+It explores Zero Trust principles and GDPR-related privacy workflows through
+role-based access, security logging, demonstration MFA, and data controls.
 
-Проект сделан как запускаемый веб-прототип для защиты курсовой работы: авторизация, роли, SQLite-база, CRUD клиентов и заявок, журнал безопасности, демонстрационный MFA, GDPR-раздел, seed-данные и тесты.
+The application includes authentication, roles, a SQLite database, customer and
+request management, security events, seed data, and tests.
 
-## Запуск
+## Quick start
 
-```bash
+```powershell
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
@@ -15,44 +18,45 @@ python manage.py seed_data
 python manage.py runserver
 ```
 
-Для Linux/Mac:
+On Linux or macOS, activate the environment with:
 
 ```bash
 source venv/bin/activate
 ```
 
-В текущем окружении Windows также можно запускать команды через `py`, например:
+On Windows, you can also use the Python launcher, for example:
 
-```bash
+```powershell
 py manage.py runserver
 ```
 
-## Тестовые пользователи
+## Demo accounts
 
-| Логин | Пароль | Роль |
-| --- | --- | --- |
-| `admin` | `admin12345` | Администратор |
-| `manager` | `manager12345` | Менеджер |
-| `security` | `security12345` | Специалист по безопасности |
-| `auditor` | `auditor12345` | Аудитор |
-| `user` | `user12345` | Обычный пользователь |
+| Username | Password | Role |
+|---|---|---|
+| `admin` | `admin12345` | Administrator |
+| `manager` | `manager12345` | Manager |
+| `security` | `security12345` | Security specialist |
+| `auditor` | `auditor12345` | Auditor |
+| `user` | `user12345` | Standard user |
 
-Для пользователей `admin`, `manager` и `security` включен учебный MFA. Код: `123456`.
+Demonstration MFA is enabled for `admin`, `manager`, and `security`.
+The demo code is `123456`.
 
-## Реализовано
+## Features
 
-- регистрация, вход, выход и демонстрационный MFA;
-- роли и RBAC-проверки на уровне Django views;
-- CRUD клиентов с полями согласия на обработку данных;
-- CRUD заявок со статусами, приоритетами, поиском и фильтрами;
-- журнал событий безопасности и список условно доверенных устройств;
-- GDPR-раздел: экспорт моих данных в JSON, запросы на удаление, политика хранения;
-- seed-команда `python manage.py seed_data`;
-- базовые Django tests.
+- Registration, sign-in, sign-out, and demonstration MFA.
+- Roles and view-level RBAC checks.
+- Customer CRUD operations with data-processing consent fields.
+- Service requests with statuses, priorities, search, and filtering.
+- Security event logging and a demonstration trusted-device list.
+- Privacy workflows: JSON data export, deletion requests, and retention policy information.
+- Seed data through `python manage.py seed_data`.
+- Basic Django tests.
 
-## Документация
+## Documentation
 
-Подробные материалы находятся в папке `docs`:
+Additional material is available in `docs`:
 
 - `docs/INSTALL.md`
 - `docs/ARCHITECTURE.md`
@@ -62,17 +66,20 @@ py manage.py runserver
 - `docs/DATABASE.md`
 - `docs/COURSEWORK_REPORT.md`
 
+## Configuration
 
-## Конфигурация
+Django settings are supplied through environment variables. Use `.env.example`
+as a reference for local development; the actual `.env` file is excluded from Git.
+Default values are intended for local use only.
 
-Параметры Django задаются через переменные окружения. Для локальной разработки можно ориентироваться на `.env.example`; сам `.env` в Git не добавляется. Значения по умолчанию предназначены только для локального запуска.
+The repository also excludes `db.sqlite3`. Create demonstration data with
+`python manage.py seed_data`.
 
-Файл `db.sqlite3` также не публикуется: демонстрационные данные создаются командой `python manage.py seed_data`.
-
-## Тесты
+## Tests
 
 ```bash
 python manage.py test
 ```
 
-Проверяются ограничения доступа, создание заявки менеджером, запрет редактирования для аудитора, запись события безопасности при отказе и JSON-экспорт данных.
+The tests cover access restrictions, manager-created requests, auditor edit
+restrictions, security logging on denied access, and JSON data export.
