@@ -1,3 +1,5 @@
+from urllib.parse import unquote
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
@@ -69,3 +71,11 @@ class AccessControlTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/json')
         self.assertIn('user', response.json())
+
+    def test_export_preserves_unicode_download_name(self):
+        self.user.username = 'Ирина'
+        self.user.save(update_fields=['username'])
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('gdpr:export_my_data'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(unquote(response['Content-Disposition']), "attachment; filename*=utf-8''kosty-data-Ирина.json")
