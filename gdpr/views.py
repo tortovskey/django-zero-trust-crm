@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import content_disposition_header
 
 from accounts.rbac import ADMIN, AUDITOR, USER, get_role, require_roles
 from security.models import TrustedDevice
@@ -70,7 +71,7 @@ def export_my_data(request):
         risk_level='medium',
     )
     response = JsonResponse(payload, json_dumps_params={'ensure_ascii': False, 'indent': 2})
-    response['Content-Disposition'] = f'attachment; filename="kosty-data-{user.username}.json"'
+    response['Content-Disposition'] = content_disposition_header(True, f'kosty-data-{user.username}.json')
     return response
 
 
